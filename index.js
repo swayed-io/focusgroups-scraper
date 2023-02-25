@@ -7,7 +7,7 @@ const { getScrappedData, saveDataToJson } = require("./scrapper/scrapper");
 
 const app = express();
 
-app.use(cors("http://localhost:3000"));
+// app.use(cors("http://localhost:3000"));
 
 
 const job = new cron.CronJob('1 * * * *', async function () {
@@ -27,7 +27,7 @@ app.get('/scrape-offers', (req, res) => {
         });
 });
 
-app.listen(8080, async () => {
+app.listen(8080 || process.env.PORT, async () => {
     console.log('Server listening on port 8080');
     await saveDataToJson();
     job.start();
