@@ -7,7 +7,7 @@ const { getScrappedData, saveDataToJson } = require("./scrapper/scrapper");
 
 const app = express();
 
-// app.use(cors("http://localhost:3000"));
+app.use(cors())
 
 
 const job = new cron.CronJob('1 * * * *', async function () {
@@ -15,16 +15,24 @@ const job = new cron.CronJob('1 * * * *', async function () {
     await saveDataToJson();
 }, null, true, 'America/Los_Angeles');
 
+app.get('/', (req, res)=> {
+    res.send('Scrapper is running....')
+} )
 
-app.get('/scrape-offers', (req, res) => {
-    getScrappedData()
+
+app.get('/scrape-offers', async (req, res) => {    
+    try {
+       await getScrappedData()
         .then((data) => {
             res.status(200).json(data);
         })
         .catch((error) => {
             console.log(error);
             res.status(500).json('Error scraping offers');
-        });
+        });        
+    } catch (error) {
+      console.log(error)  
+    }
 });
 
 app.listen(8080 || process.env.PORT, async () => {

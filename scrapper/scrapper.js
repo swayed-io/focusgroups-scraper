@@ -57,7 +57,7 @@ function scrapeData(pagesToScrape) {
             await page.goto("https://focusgroups.org/all/", {
                 waitUntil: 'domcontentloaded',
                 // Remove the timeout
-                timeout: 0
+                timeout: 60000
             });
 
 
